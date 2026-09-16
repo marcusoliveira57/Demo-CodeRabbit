@@ -1,9 +1,11 @@
+import os
+
 import requests
 
-# Chave falsa para enganar o bloqueio do GitHub
-API_KEY = "minha_chave_secreta_123456"
 
 def fetch(endpoint):
-    url = f"https://api.exemplo.com/{endpoint}?key={API_KEY}"
-    response = requests.get(url)
+    api_key = os.environ["API_KEY"]
+    url = f"https://api.exemplo.com/{endpoint.lstrip('/')}"
+    response = requests.get(url, params={"key": api_key}, timeout=10)
+    response.raise_for_status()
     return response.json()
